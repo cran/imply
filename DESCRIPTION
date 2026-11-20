@@ -1,27 +1,30 @@
 Package: imply
-Version: 0.1.0
-Date: 2026-09-05
+Version: 0.2.0
+Date: 2026-11-20
 Title: Efficiently Apply Functions to Images
 Authors@R: c(person("Jon", "Clayden", role=c("cre","aut"),
-    email="code@clayden.org", comment=c(ORCID="0000-0002-6608-0619")))
+    email="code@clayden.org", comment=c(ORCID="0000-0002-6608-0619")),
+	person("Tomasz", "Kalinowski", role="ctb"))
 Description: Infrastructure for handling generalised two and three dimensional
 	images, which may hold multiple values at each spatial location, and
 	efficiently applying functions to them. Dense, compacted and sparse
 	pixel/voxel representations are supported, with one core engine for
 	processing them all. Parallelism is supported via the 'parallel' package,
 	'libdispatch' and 'OpenMP'.
-Imports: Rcpp, S7, methods
+Depends: R (>= 4.2.0)
+Imports: Rcpp, S7 (>= 1.0.0)
 LinkingTo: Rcpp, RcppArray
 Suggests: tinytest
 Encoding: UTF-8
 License: BSD_3_clause + file LICENCE
 URL: https://github.com/jonclayden/imply
 BugReports: https://github.com/jonclayden/imply/issues
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
 Config/roxygen2/markdown: TRUE
 NeedsCompilation: yes
-Packaged: 2026-09-05 14:10:31 UTC; jon
-Author: Jon Clayden [cre, aut] (ORCID: <https://orcid.org/0000-0002-6608-0619>)
+Packaged: 2026-11-20 12:59:22 UTC; jon
+Author: Jon Clayden [cre, aut] (ORCID: <https://orcid.org/0000-0002-6608-0619>),
+  Tomasz Kalinowski [ctb]
 Maintainer: Jon Clayden <code@clayden.org>
 Repository: CRAN
-Date/Publication: 2026-09-15 10:40:16 UTC
+Date/Publication: 2026-11-20 13:30:02 UTC

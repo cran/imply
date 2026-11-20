@@ -22,7 +22,8 @@ expect_true(isSparseImage(s))
 expect_false(isDenseImage(s))
 expect_equal(dim(s), c(8L, 8L, 4L))
 expect_equal(length(s), 256L)
-expect_equal(s@spatial, 3L)
+expect_equal(spatial(s), 3L)
+expect_identical(geometry(s), geometry(image))
 
 ## Packing loses nothing at all, missing values included
 expect_identical(as.array(s), dense)
@@ -105,6 +106,9 @@ cases <- list(
     list(quote(sqrt(abs(s))),   quote(sqrt(abs(dense))),    TRUE),
     list(quote(sign(s)),        quote(sign(dense)),         TRUE),
     list(quote(round(s)),       quote(round(dense)),        TRUE),
+    list(quote(-s),             quote(-dense),              TRUE),
+    list(quote(+s),             quote(+dense),              TRUE),
+    list(quote(!s),             quote(!dense),              FALSE),
     list(quote(s + 1),          quote(dense + 1),           FALSE),
     list(quote(1 + s),          quote(1 + dense),           FALSE),
     list(quote(s - 1),          quote(dense - 1),           FALSE),

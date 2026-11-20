@@ -35,9 +35,16 @@ inline std::vector<Extent> dimsOf (const Rcpp::RObject &x)
     return result;
 }
 
-// Resolve the spatial/element split. An explicit argument wins; otherwise an
-// attribute set by the S7 class is used; otherwise the leading three
-// dimensions (or all of them, if fewer) are taken to be spatial
+// Resolve the spatial/element split. An explicit argument wins; otherwise the
+// grid of the image's geometry is used; otherwise the leading three dimensions
+// (or all of them, if fewer) are taken to be spatial.
+//
+// S7 stores properties as ordinary attributes, so the geometry is an attribute
+// of the image and its grid an attribute of that, and no S7 knowledge is
+// needed here.
+//
+// The geometry is reachable from x, so it cannot actually be collected while
+// x is alive, but rchk cannot see that, so PROTECT it to keep the check clean
 inline int spatialOf (const Rcpp::RObject &x, const Rcpp::Nullable<Rcpp::IntegerVector> &spatial, const int nDims)
 {
     int result = NA_INTEGER;
@@ -49,11 +56,16 @@ inline int spatialOf (const Rcpp::RObject &x, const Rcpp::Nullable<Rcpp::Integer
             Rcpp::stop("Number of spatial dimensions must be a single value");
         result = value[0];
     }
-    else if (x.hasAttribute("spatial"))
+    else
     {
-        const Rcpp::IntegerVector value(x.attr("spatial"));
-        if (value.size() == 1)
-            result = value[0];
+        const SEXP geometry = PROTECT(Rf_getAttrib(x, Rf_install("geometry")));
+        if (geometry != R_NilValue)
+        {
+            const SEXP grid = Rf_getAttrib(geometry, Rf_install("dims"));
+            if (grid != R_NilValue)
+                result = static_cast<int>(Rf_xlength(grid));
+        }
+        UNPROTECT(1);
     }
 
     if (result == NA_INTEGER || result < 0)
